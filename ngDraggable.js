@@ -123,7 +123,7 @@ angular.module("ngDraggable", [])
                         _pressTimer = setTimeout(function(){
                             cancelPress();
                             onlongpress(evt);
-                        },100);
+                        },10);
                         $document.on(_moveEvents, cancelPress);
                         $document.on(_releaseEvents, cancelPress);
                     }else{
@@ -155,6 +155,14 @@ angular.module("ngDraggable", [])
 
                     _mx = ngDraggable.inputEvent(evt).pageX;//ngDraggable.getEventProp(evt, 'pageX');
                     _my = ngDraggable.inputEvent(evt).pageY;//ngDraggable.getEventProp(evt, 'pageY');
+                     // Start MJW01 touch fix does not work for me without it
+                        if (!_mx){
+                          _mx = ngDraggable.inputEvent(evt).originalEvent.touches[0].pageX;
+                        }
+                        if (!_my){
+                          _my = ngDraggable.inputEvent(evt).originalEvent.touches[0].pageY;
+                        }
+                        // END MJW01 touch fix
                     _mrx = _mx - offset.left;
                     _mry = _my - offset.top;
                     if (_centerAnchor) {
@@ -194,7 +202,14 @@ angular.module("ngDraggable", [])
 
                     _mx = ngDraggable.inputEvent(evt).pageX;//ngDraggable.getEventProp(evt, 'pageX');
                     _my = ngDraggable.inputEvent(evt).pageY;//ngDraggable.getEventProp(evt, 'pageY');
-
+                     // Start MJW02 touch fix does not work for me without this
+                        if (!_mx){
+                          _mx = ngDraggable.inputEvent(evt).originalEvent.touches[0].pageX;
+                        }
+                        if (!_my){
+                          _my = ngDraggable.inputEvent(evt).originalEvent.touches[0].pageY;
+                        }
+                        // END MJW02 touch fix
                     if (_centerAnchor) {
                         _tx = _mx - element.centerX - _dragOffset.left;
                         _ty = _my - element.centerY - _dragOffset.top;
